@@ -1,16 +1,25 @@
 package com.karmeleon.wearbatterymonitor;
 
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
+import android.os.BatteryManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -20,42 +29,44 @@ import java.util.concurrent.TimeUnit;
 public class BatteryInfoListenerService extends WearableListenerService {
 
 	private static final String TAG = "BatteryInfoListener";
-	private static final String START_ACTIVITY_PATH = "/start-activity";
-	private static final String DATA_ITEM_RECEIVED_PATH = "/data-item-received";
+	private static final String DATA_ITEM_RECEIVED_PATH = "/battery_info";
+
+	private final BatteryManager mBatteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+
+	private GoogleApiClient mGoogleApiClient;
 
 	@Override
-	public void onDataChanged(DataEventBuffer dataEvents) {
-		if (Log.isLoggable(TAG, Log.DEBUG)) {
-			Log.d(TAG, "onDataChanged: " + dataEvents);
+	public void onMessageReceived(MessageEvent messageEvent) {
+		//super.onMessageReceived(messageEvent);
+
+		Toast.makeText(BatteryInfoListenerService.this, "ayy lmao", Toast.LENGTH_SHORT).show();
+		String nodeId = messageEvent.getSourceNodeId();
+		Log.v(TAG, "Received message from wearable " + nodeId);
+
+		if(mGoogleApiClient == null) {
+			mGoogleApiClient = new GoogleApiClient.Builder(this)
+					.addApi(Wearable.API)
+					.build();
+
+			ConnectionResult connectionResult = mGoogleApiClient.blockingConnect(30, TimeUnit.SECONDS);
+
+			if (!connectionResult.isSuccess()) {
+				Log.e(TAG, "Failed to connect to GoogleApiClient.");
+				return;
+			}
 		}
-		final List<DataEvent> events = FreezableUtils
-				.freezeIterable(dataEvents);
 
-		GoogleApiClient googleApiClient = new GoogleApiClient.Builder(this)
-				.addApi(Wearable.API)
-				.build();
+		// Retrieve the battery info from Android
 
-		ConnectionResult connectionResult =
-				googleApiClient.blockingConnect(30, TimeUnit.SECONDS);
-
-		if (!connectionResult.isSuccess()) {
-			Log.e(TAG, "Failed to connect to GoogleApiClient.");
-			return;
+		JSONObject batteryInfo = new JSONObject();
+		try {
+			batteryInfo.put("capacity", (long) mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
+		} catch (JSONException e) {
+			Log.e(TAG, e.getStackTrace().toString());
 		}
 
-		// Loop through the events and send a message
-		// to the node that created the data item.
-		for (DataEvent event : events) {
-			Uri uri = event.getDataItem().getUri();
-
-			// Get the node id from the host value of the URI
-			String nodeId = uri.getHost();
-			// Set the data of the message to be the bytes of the URI
-			byte[] payload = uri.toString().getBytes();
-
-			// Send the RPC
-			Wearable.MessageApi.sendMessage(googleApiClient, nodeId,
-					DATA_ITEM_RECEIVED_PATH, payload);
-		}
+		// Send the RPC
+		Wearable.MessageApi.sendMessage(mGoogleApiClient, nodeId, DATA_ITEM_RECEIVED_PATH, batteryInfo.toString().getBytes());
+		Log.v(TAG, "Sent reply to wearable");
 	}
 }

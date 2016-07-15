@@ -14,73 +14,31 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.CapabilityApi;
 import com.google.android.gms.wearable.CapabilityInfo;
 import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.Wearable;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Set;
 
-public class MainActivity extends Activity implements
-		GoogleApiClient.ConnectionCallbacks,
-		GoogleApiClient.OnConnectionFailedListener {
+public class MainActivity extends Activity implements MessageApi.MessageListener {
 
 	private static final String TAG = "BatteryInfo";
 
 	private static final String BATTERY_INFO_CAPABILITY_NAME = "battery_info";
+	private static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
 	private String batteryInfoNodeId = null;
 
 	private GoogleApiClient mGoogleApiClient;
+	private BatteryMonitorTask mMonitorTask;
 
 	/* Google Play Services stuff */
 
 	protected synchronized void buildGoogleApiClient() {
 		this.mGoogleApiClient = new GoogleApiClient.Builder(this)
-				.addConnectionCallbacks(this)
 				.addApi(Wearable.API)
-				.addOnConnectionFailedListener(this)
 				.build();
-	}
-
-	/*
-	 * Called by Location Services when the request to connect the
-	 * client finishes successfully. At this point, you can
-	 * request the current location or start periodic updates
-	 */
-	@Override
-	public void onConnected(Bundle bundle) {
-		Log.v(TAG, "Google API connection successful");
-	}
-
-	/*
-	 * Called by Location Services if the connection to the
-	 * location client drops because of an error.
-	 */
-	@Override
-	public void onConnectionSuspended(int i) {
-		Log.w(TAG, "Google API connection suspended");
-	}
-
-	/*
-	 * Called by Location Services if the attempt to
-	 * Location Services fails.
-	 */
-	@Override
-	public void onConnectionFailed(ConnectionResult connectionResult) {
-		//mInProgress = false;
-
-		Log.e(TAG, "Google API connection failed");
-
-		/*
-		 * Google Play services can resolve some errors it detects.
-		 * If the error has a resolution, try sending an Intent to
-		 * start a Google Play services activity that can resolve
-		 * error.
-		 */
-		if (connectionResult.hasResolution()) {
-
-			// If no resolution is available, display an error dialog
-		} else {
-
-		}
+		mGoogleApiClient.connect();
 	}
 
 	private void setupBatteryInfo() {
@@ -89,7 +47,6 @@ public class MainActivity extends Activity implements
 						mGoogleApiClient, BATTERY_INFO_CAPABILITY_NAME,
 						CapabilityApi.FILTER_REACHABLE).await();
 
-		Log.v(TAG, "Passed await");
 		updateBatteryInfoCapability(result.getCapability());
 
 		CapabilityApi.CapabilityListener capabilityListener =
@@ -126,8 +83,6 @@ public class MainActivity extends Activity implements
 
 	private TextView mTextView;
 
-	public static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
-
 	private void requestBatteryInfo() {
 		if (batteryInfoNodeId != null) {
 			Wearable.MessageApi.sendMessage(mGoogleApiClient, batteryInfoNodeId,
@@ -135,6 +90,7 @@ public class MainActivity extends Activity implements
 					new ResultCallback<MessageApi.SendMessageResult>() {
 						@Override
 						public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+							Log.v(TAG, "Send successful to node " + batteryInfoNodeId);
 							if (!sendMessageResult.getStatus().isSuccess()) {
 								// Failed to send message
 							}
@@ -144,6 +100,16 @@ public class MainActivity extends Activity implements
 		} else {
 			// Unable to retrieve node with battery info capability
 		}
+	}
+
+	public void onMessageReceived(MessageEvent messageEvent) {
+
+		String data = "";
+		try {
+			data = new String(messageEvent.getData(), "UTF-8");
+		} catch(UnsupportedEncodingException e) { /*this won't happen*/ }
+
+		Log.v(TAG, "Received message: " + data);
 	}
 
 	@Override
@@ -161,6 +127,24 @@ public class MainActivity extends Activity implements
 
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// stop the monitor task from polling when the app isn't open
+		if(mMonitorTask != null)
+			mMonitorTask.cancel(true);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		// restart the existing monitor task, if one exists
+		if(mMonitorTask != null) {
+			mMonitorTask = new BatteryMonitorTask();
+			mMonitorTask.execute();
+		}
+	}
+
 	private class InitBatteryMonitorTask extends AsyncTask<Void, Void, Void> {
 		protected Void doInBackground(Void... voids) {
 			Log.v(TAG, "Initializing Google API");
@@ -173,7 +157,8 @@ public class MainActivity extends Activity implements
 
 		protected void onPostExecute(Void result) {
 			Log.v(TAG, "Launching battery poller");
-			new BatteryMonitorTask().execute();
+			mMonitorTask = new BatteryMonitorTask();
+			mMonitorTask.execute();
 		}
 	}
 
