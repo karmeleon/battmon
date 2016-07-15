@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.BatteryManager;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -31,17 +32,26 @@ public class BatteryInfoListenerService extends WearableListenerService {
 	private static final String TAG = "BatteryInfoListener";
 	private static final String DATA_ITEM_RECEIVED_PATH = "/battery_info";
 
-	private final BatteryManager mBatteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+	private BatteryManager mBatteryManager;
 
 	private GoogleApiClient mGoogleApiClient;
 
 	@Override
-	public void onMessageReceived(MessageEvent messageEvent) {
-		//super.onMessageReceived(messageEvent);
+	public void onCreate() {
+		super.onCreate();
+		Log.v(TAG, "Started service");
+		mBatteryManager = (BatteryManager) getSystemService(BATTERY_SERVICE);
+	}
 
-		Toast.makeText(BatteryInfoListenerService.this, "ayy lmao", Toast.LENGTH_SHORT).show();
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		Log.v(TAG, "Destroyed service");
+	}
+
+	@Override
+	public void onMessageReceived(MessageEvent messageEvent) {
 		String nodeId = messageEvent.getSourceNodeId();
-		Log.v(TAG, "Received message from wearable " + nodeId);
 
 		if(mGoogleApiClient == null) {
 			mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -60,13 +70,35 @@ public class BatteryInfoListenerService extends WearableListenerService {
 
 		JSONObject batteryInfo = new JSONObject();
 		try {
-			batteryInfo.put("capacity", (long) mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
+			// Determine the power source
+			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
+			Intent batteryStatus = this.registerReceiver(null, ifilter);
+
+			String powerSource = "";
+			switch(batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)) {
+				case BatteryManager.BATTERY_PLUGGED_AC:
+					powerSource = "Charging via AC";
+					break;
+				case BatteryManager.BATTERY_PLUGGED_USB:
+					powerSource = "Charging via USB";
+					break;
+				case BatteryManager.BATTERY_PLUGGED_WIRELESS:
+					powerSource = "Charging wirelessly";
+					break;
+				default:
+					powerSource = "Discharging";
+			}
+
+			batteryInfo.put("source", powerSource);
+			batteryInfo.put("capacity", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
+			batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
+			batteryInfo.put("temperature", batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) / 10.0f);
+
 		} catch (JSONException e) {
 			Log.e(TAG, e.getStackTrace().toString());
 		}
 
 		// Send the RPC
 		Wearable.MessageApi.sendMessage(mGoogleApiClient, nodeId, DATA_ITEM_RECEIVED_PATH, batteryInfo.toString().getBytes());
-		Log.v(TAG, "Sent reply to wearable");
 	}
 }
