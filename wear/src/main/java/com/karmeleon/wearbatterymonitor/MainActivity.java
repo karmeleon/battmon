@@ -42,7 +42,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	private static final String TAG = "BatteryInfo";
 	private static final int REFRESH_PERIOD = 1000; // ms
 
-	private static final boolean MSG_DEBUG = true;
+	private static final boolean MSG_DEBUG = false;
 
 	private static final String BATTERY_INFO_CAPABILITY_NAME = "battery_info";
 	private static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
