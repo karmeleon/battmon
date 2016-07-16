@@ -275,7 +275,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 			mMonitorTask.cancel(true);
 			Log.d(TAG, "Stopping monitor task");
 		} else
-			Log.d(TAG, "Not stopping monitor task " + mMonitorTask.toString());
+			Log.d(TAG, "Not stopping monitor task");
 		if(mListeningForMessages) {
 			Wearable.MessageApi.removeListener(mGoogleApiClient, this);
 			mListeningForMessages = false;
