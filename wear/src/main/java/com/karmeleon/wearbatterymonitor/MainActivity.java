@@ -2,12 +2,22 @@ package com.karmeleon.wearbatterymonitor;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.BatteryManager;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.wearable.activity.WearableActivity;
 import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -40,7 +50,15 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 	private boolean mListeningForMessages = false;
 
-	private TextView mTextView;
+	private TextView mBatteryPercentageText;
+	private TextView mCurrentDisplay;
+	private TextView mTemperatureDisplay;
+	private TextView mVoltageDisplay;
+	private TextView mSourceDisplayText;
+
+	private ImageView mSourceDisplayImage;
+
+	private View mBatteryPercentageMeter;
 
 	/* Messaging setup stuff */
 
@@ -119,14 +137,53 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		String data = "";
 		try {
 			data = new String(messageEvent.getData(), "UTF-8");
-		} catch(UnsupportedEncodingException e) { /*this won't happen*/ }
+		} catch(UnsupportedEncodingException e) { /* this won't happen */ }
 
 		JSONObject batteryInfo = null;
 		try {
 			batteryInfo = new JSONObject(data);
 		} catch (JSONException e) { /* this won't happen either */ }
 
-		mTextView.setText(data);
+		try {
+			// Update percentage
+			int percentage = batteryInfo.getInt("capacity");
+			mBatteryPercentageText.setText(percentage + "%");
+			mBatteryPercentageMeter.setBackgroundColor(getBatteryColor(percentage));
+			mBatteryPercentageMeter.setLayoutParams(new TableLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, (float)percentage));
+
+			// Update source
+			int drawableId, textId;
+			switch(batteryInfo.getInt("source")) {
+				case(BatteryManager.BATTERY_PLUGGED_AC):
+					drawableId = R.drawable.ic_power_grey_24dp;
+					textId = R.string.ac;
+					break;
+				case(BatteryManager.BATTERY_PLUGGED_USB):
+					drawableId = R.drawable.ic_usb_grey_24dp;
+					textId = R.string.usb;
+					break;
+				case(BatteryManager.BATTERY_PLUGGED_WIRELESS):
+					drawableId = R.drawable.ic_nfc_grey_24dp;
+					textId = R.string.wireless;
+					break;
+				default:
+					drawableId = R.drawable.ic_battery_grey_24dp;
+					textId = R.string.discharging;
+			}
+			mSourceDisplayImage.setImageDrawable(ContextCompat.getDrawable(this, drawableId));
+			mSourceDisplayText.setText(getResources().getString(textId));
+
+			// Update the other fields
+			String current = batteryInfo.getInt("current") + " mA";
+			mCurrentDisplay.setText(current);
+
+			String temperature = String.format("%.1f° C", batteryInfo.getInt("temperature") / 10.0f);
+			mTemperatureDisplay.setText(temperature);
+
+			String voltage = String.format("%.3f V", batteryInfo.getInt("voltage") / 1000.0f);
+			mVoltageDisplay.setText(voltage);
+
+		} catch(JSONException e) { /* also won't happen */ }
 	}
 
 	@Override
@@ -134,15 +191,23 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		setAmbientEnabled();
-
-		final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+		final WatchViewStub stub = (WatchViewStub)findViewById(R.id.watch_view_stub);
 		stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
 			@Override
-			public void onLayoutInflated(WatchViewStub stub) {
-				mTextView = (TextView) stub.findViewById(R.id.text);
+			public void onLayoutInflated(WatchViewStub watchViewStub) {
+				mBatteryPercentageText = (TextView) stub.findViewById(R.id.percent_text);
+				mCurrentDisplay = (TextView) stub.findViewById(R.id.current_display);
+				mTemperatureDisplay = (TextView) stub.findViewById(R.id.temperature_display);
+				mVoltageDisplay = (TextView) stub.findViewById(R.id.voltage_display);
+				mSourceDisplayText = (TextView) stub.findViewById(R.id.source_display);
+
+				mSourceDisplayImage = (ImageView) stub.findViewById(R.id.power_src_icon);
+
+				mBatteryPercentageMeter = stub.findViewById(R.id.battery_meter);
 			}
 		});
+
+		setAmbientEnabled();
 		new InitBatteryMonitorTask().execute();
 
 	}
@@ -172,11 +237,56 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 			Wearable.MessageApi.removeListener(mGoogleApiClient, this);
 	}
 
+	private void ambientifyTextView(TextView tv) {
+		tv.getPaint().setAntiAlias(false);
+		tv.getPaint().setColor(Color.WHITE);
+	}
+
+	private void unambientifyTextView(TextView tv) {
+		tv.getPaint().setAntiAlias(true);
+		tv.getPaint().setColor(Color.LTGRAY);
+	}
+
+	private void tintDrawable(ImageView iv, int color) {
+		Drawable mWrappedDrawable = iv.getDrawable().mutate();
+		mWrappedDrawable = DrawableCompat.wrap(mWrappedDrawable);
+		DrawableCompat.setTint(mWrappedDrawable, color);
+		DrawableCompat.setTintMode(mWrappedDrawable, PorterDuff.Mode.SRC_IN);
+	}
+
+	private int getBatteryColor(int percent) {
+		int color1, color2;
+		float frac = percent / 100.0f;
+
+		if(percent <= 50) {
+			color1 = ContextCompat.getColor(this, R.color.battery_low);
+			color2 = ContextCompat.getColor(this, R.color.battery_med);
+			frac *= 2;
+		} else {
+			color1 = ContextCompat.getColor(this, R.color.battery_med);
+			color2 = ContextCompat.getColor(this, R.color.battery_high);
+			frac = (frac - .5f) * 2;
+		}
+
+		int r = (int)(Color.red(color2) * frac + Color.red(color1) * (1.0f - frac));
+		int g = (int)(Color.green(color2) * frac + Color.green(color1) * (1.0f - frac));
+		int b = (int)(Color.blue(color2) * frac + Color.blue(color1) * (1.0f - frac));
+		return Color.rgb(r, g, b);
+	}
+
 	@Override
 	public void onEnterAmbient(Bundle ambientDetails) {
 		super.onEnterAmbient(ambientDetails);
 
-		mTextView.getPaint().setAntiAlias(false);
+		// Android has no way to easily select all views of a type, so we have to do it manually :|
+		mBatteryPercentageText.getPaint().setAntiAlias(false);
+		ambientifyTextView(mCurrentDisplay);
+		ambientifyTextView(mTemperatureDisplay);
+		ambientifyTextView(mVoltageDisplay);
+		ambientifyTextView(mSourceDisplayText);
+
+		tintDrawable(mSourceDisplayImage, Color.WHITE);
+
 		// cancel the rapid refresh rate task
 		if(mMonitorTask != null)
 			mMonitorTask.cancel(true);
@@ -195,7 +305,15 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	public void onExitAmbient() {
 		super.onExitAmbient();
 
-		mTextView.getPaint().setAntiAlias(true);
+		// Have to do this manually again
+
+		mBatteryPercentageText.getPaint().setAntiAlias(true);
+		unambientifyTextView(mCurrentDisplay);
+		unambientifyTextView(mTemperatureDisplay);
+		unambientifyTextView(mVoltageDisplay);
+		unambientifyTextView(mSourceDisplayText);
+
+		tintDrawable(mSourceDisplayImage, Color.LTGRAY);
 		// restart the refresh task
 		mMonitorTask = new BatteryMonitorTask();
 		mMonitorTask.execute();

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<color name="battery_low">#FF2828</color>
+	<color name="battery_med">#FFFF28</color>
+	<color name="battery_high">#28FF28</color>
+</resources>
