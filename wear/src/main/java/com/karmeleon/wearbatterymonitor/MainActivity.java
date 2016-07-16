@@ -42,7 +42,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	private static final String TAG = "BatteryInfo";
 	private static final int REFRESH_PERIOD = 1000; // ms
 
-	private static final boolean MSG_DEBUG = false;
+	private static final boolean MSG_DEBUG = true;
 
 	private static final String BATTERY_INFO_CAPABILITY_NAME = "battery_info";
 	private static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
@@ -100,6 +100,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 		Wearable.MessageApi.addListener(mGoogleApiClient, this);
 		mListeningForMessages = true;
+		Log.d(TAG, "Started listening for messages (setupBatteryInfo)");
 	}
 
 	private void updateBatteryInfoCapability(CapabilityInfo capabilityInfo) {
@@ -149,13 +150,17 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		String data = "";
 		try {
 			data = new String(messageEvent.getData(), "UTF-8");
-		} catch(UnsupportedEncodingException e) { /* this won't happen */ }
+		} catch(UnsupportedEncodingException e) {
+			Log.e(TAG, e.getStackTrace().toString());
+		}
 
 		JSONObject batteryInfo = null;
 		try {
 			batteryInfo = new JSONObject(data);
 			mLastBatteryInfo = batteryInfo;
-		} catch (JSONException e) { /* this won't happen either */ }
+		} catch (JSONException e) {
+			Log.e(TAG, e.getStackTrace().toString());
+		}
 
 		drawScreen(batteryInfo);
 	}
@@ -210,7 +215,9 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 			mHasDrawnScreen = true;
 
-		} catch(JSONException e) { /* also won't happen */ }
+		} catch(JSONException e) {
+			Log.e(TAG, e.getStackTrace().toString());
+		}
 	}
 
 	@Override
@@ -242,8 +249,17 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	@Override
 	protected void onResume() {
 		super.onResume();
+
+		Log.d(TAG, "onResume");
+
+		if(mGoogleApiClient != null && !mListeningForMessages) {
+			Wearable.MessageApi.addListener(mGoogleApiClient, this);
+			mListeningForMessages = true;
+			Log.d(TAG, "Started listening for messages (onResume)");
+		}
+
 		// restart the existing monitor task, if one exists
-		if(mMonitorTask != null) {
+		if(mMonitorTask != null && mMonitorTask.isCancelled()) {
 			mMonitorTask = new BatteryMonitorTask();
 			mMonitorTask.execute();
 		}
@@ -252,16 +268,25 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	@Override
 	protected void onPause() {
 		super.onPause();
+
+		Log.d(TAG, "onPause");
 		// stop the monitor task from polling when the app isn't open
-		if(mMonitorTask != null)
+		if(mMonitorTask != null) {
 			mMonitorTask.cancel(true);
+			Log.d(TAG, "Stopping monitor task");
+		} else
+			Log.d(TAG, "Not stopping monitor task " + mMonitorTask.toString());
+		if(mListeningForMessages) {
+			Wearable.MessageApi.removeListener(mGoogleApiClient, this);
+			mListeningForMessages = false;
+			Log.d(TAG, "Stopped listening for messages");
+		} else
+			Log.d(TAG, "Didn't stop listening for messages");
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if(mListeningForMessages)
-			Wearable.MessageApi.removeListener(mGoogleApiClient, this);
 	}
 
 	private void ambientifyTextView(TextView tv) {
@@ -342,8 +367,10 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 			drawScreen(mLastBatteryInfo);
 
 		// restart the refresh task
-		mMonitorTask = new BatteryMonitorTask();
-		mMonitorTask.execute();
+		if(mMonitorTask != null && mMonitorTask.isCancelled()) {
+			mMonitorTask = new BatteryMonitorTask();
+			mMonitorTask.execute();
+		}
 	}
 
 	/* Background tasks */
@@ -360,18 +387,22 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 		protected void onPostExecute(Void result) {
 			Log.v(TAG, "Launching battery poller");
-			mMonitorTask = new BatteryMonitorTask();
-			mMonitorTask.execute();
+			if(mMonitorTask == null || mMonitorTask.isCancelled()) {
+				mMonitorTask = new BatteryMonitorTask();
+				mMonitorTask.execute();
+			}
 		}
 	}
 
 	private class BatteryMonitorTask extends AsyncTask<Void, Void, Void> {
 		protected Void doInBackground(Void... voids) {
 			while(true) {
-				if(isCancelled())
+				if(isCancelled()) {
+					Log.d(TAG, "Monitor canceled");
 					return null;
+				}
 				requestBatteryInfo();
-				try {Thread.sleep(REFRESH_PERIOD);} catch(InterruptedException e) {}
+				try {Thread.sleep(REFRESH_PERIOD);} catch(InterruptedException e) {return null;}
 			}
 		}
 	}
