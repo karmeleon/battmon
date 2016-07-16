@@ -1,4 +1,4 @@
-package com.karmeleon.wearbatterymonitor;
+package com.karmeleon.battmon;
 
 import android.content.Intent;
 import android.content.IntentFilter;

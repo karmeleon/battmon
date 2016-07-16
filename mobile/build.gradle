@@ -5,7 +5,7 @@ android {
 	buildToolsVersion "24.0.0"
 
 	defaultConfig {
-		applicationId "com.karmeleon.wearbatterymonitor"
+		applicationId "com.karmeleon.battmon"
 		minSdkVersion 21
 		targetSdkVersion 24
 		versionCode 1

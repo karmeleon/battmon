@@ -19,7 +19,7 @@
         jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="24.0.0"
-        sha1="404a2474befc1ce723f70d511c7b4195c8714fb6">
+        sha1="860965807495c0c500300b341f7303407a20e6d2">
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_30b12a2f5e52d517e621da600fca87233811753f/classes.dex" />
     </item>
     <item
@@ -30,18 +30,18 @@
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/com.android.support-recyclerview-v7-23.0.1_a2cf22280600dc11adf7d133479c8584aafc90c7/classes.dex" />
     </item>
     <item
-        jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/9.2.1/jars/classes.jar"
-        jumboMode="true"
-        revision="24.0.0"
-        sha1="dd1907a2e855eeb2be8aa3486f3d4d4f1c8b22af">
-        <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-wearable-9.2.1_ada0e773adb634c7d5686b1a2c8895526b4122b8/classes.dex" />
-    </item>
-    <item
         jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/exploded-aar/com.android.support/support-v4/23.0.1/jars/libs/internal_impl-23.0.1.jar"
         jumboMode="true"
         revision="24.0.0"
         sha1="aa92916125166649d8ad4ba3940c3dd7515596d3">
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/internal_impl-23.0.1_cb790276587369da761bf27e63eec134c3e751e6/classes.dex" />
+    </item>
+    <item
+        jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/exploded-aar/com.google.android.gms/play-services-wearable/9.2.1/jars/classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="dd1907a2e855eeb2be8aa3486f3d4d4f1c8b22af">
+        <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/com.google.android.gms-play-services-wearable-9.2.1_ada0e773adb634c7d5686b1a2c8895526b4122b8/classes.dex" />
     </item>
     <item
         jar="/Users/shawn/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/23.0.1/support-annotations-23.0.1.jar"
@@ -75,7 +75,7 @@
         jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.0"
-        sha1="a792bc717cdbda00dee87914310442abaa7fbd92">
+        sha1="9579419d714e64a53781f6ca3f3a3c19b1b8e318">
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_a74f1c3041a66839d73cf05f398562453ec48aad/classes.dex" />
     </item>
 

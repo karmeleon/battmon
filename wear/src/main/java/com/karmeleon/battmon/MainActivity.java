@@ -1,4 +1,4 @@
-package com.karmeleon.wearbatterymonitor;
+package com.karmeleon.battmon;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -62,6 +62,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	private ImageView mSourceDisplayImage;
 
 	private View mBatteryPercentageMeter;
+	private LinearLayout mBatteryMeterBackground;
 
 	private boolean mIsAmbient = false;
 	private boolean mHasDrawnScreen = false;
@@ -100,7 +101,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 		Wearable.MessageApi.addListener(mGoogleApiClient, this);
 		mListeningForMessages = true;
-		Log.d(TAG, "Started listening for messages (setupBatteryInfo)");
+		if(MSG_DEBUG)
+			Log.d(TAG, "Started listening for messages (setupBatteryInfo)");
 	}
 
 	private void updateBatteryInfoCapability(CapabilityInfo capabilityInfo) {
@@ -238,6 +240,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 				mSourceDisplayImage = (ImageView) stub.findViewById(R.id.power_src_icon);
 
 				mBatteryPercentageMeter = stub.findViewById(R.id.battery_meter);
+				mBatteryMeterBackground = (LinearLayout) stub.findViewById(R.id.meter_display);
 			}
 		});
 
@@ -332,6 +335,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		ambientifyTextView(mVoltageDisplay);
 		ambientifyTextView(mSourceDisplayText);
 
+		mBatteryMeterBackground.setBackgroundColor(Color.BLACK);
+
 		// cancel the rapid refresh rate task
 		if(mMonitorTask != null)
 			mMonitorTask.cancel(true);
@@ -362,6 +367,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		unambientifyTextView(mTemperatureDisplay);
 		unambientifyTextView(mVoltageDisplay);
 		unambientifyTextView(mSourceDisplayText);
+
+		mBatteryMeterBackground.setBackgroundColor(Color.DKGRAY);
 
 		if(mLastBatteryInfo != null)
 			drawScreen(mLastBatteryInfo);
