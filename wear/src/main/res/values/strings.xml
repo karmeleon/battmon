@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WearBatteryMonitor</string>
+    <string name="app_name">Battmon</string>
     <string name="wireless">Wireless</string>
     <string name="ac">AC</string>
     <string name="usb">USB</string>
