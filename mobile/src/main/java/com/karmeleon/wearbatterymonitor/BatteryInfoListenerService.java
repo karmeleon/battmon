@@ -74,25 +74,11 @@ public class BatteryInfoListenerService extends WearableListenerService {
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 			Intent batteryStatus = this.registerReceiver(null, ifilter);
 
-			String powerSource = "";
-			switch(batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)) {
-				case BatteryManager.BATTERY_PLUGGED_AC:
-					powerSource = "Charging via AC";
-					break;
-				case BatteryManager.BATTERY_PLUGGED_USB:
-					powerSource = "Charging via USB";
-					break;
-				case BatteryManager.BATTERY_PLUGGED_WIRELESS:
-					powerSource = "Charging wirelessly";
-					break;
-				default:
-					powerSource = "Discharging";
-			}
-
-			batteryInfo.put("source", powerSource);
+			batteryInfo.put("source", batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1));
+			batteryInfo.put("temperature", batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1));
 			batteryInfo.put("capacity", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
 			batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
-			batteryInfo.put("temperature", batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1) / 10.0f);
+			batteryInfo.put("voltage", batteryStatus.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1));
 
 		} catch (JSONException e) {
 			Log.e(TAG, e.getStackTrace().toString());

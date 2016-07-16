@@ -1,15 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.karmeleon.wearbatterymonitor.MainActivity"
-    tools:deviceIds="wear_square">
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	tools:context="com.karmeleon.wearbatterymonitor.MainActivity"
+	tools:deviceIds="wear_square">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_square" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight=".5">
+
+		<LinearLayout
+			android:id="@+id/meter_display"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:weightSum="1000"
+			android:orientation="horizontal"
+			android:background="@color/dark_grey">
+
+			<View
+				android:id="@+id/battery_meter"
+				android:layout_width="0dp"
+				android:layout_height="match_parent"
+				android:background="@color/green"
+				android:layout_weight="600"/>
+
+		</LinearLayout>
+
+		<TextView
+			android:id="@+id/percent_text"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:gravity="center"
+			android:text="60%"
+			android:textSize="40sp"
+			android:textColor="@color/black"/>
+	</RelativeLayout>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_weight=".5"
+		android:padding="10dp"
+		android:background="@color/black">
+
+		<ImageView
+			android:id="@+id/power_src_icon"
+			android:layout_width="80dp"
+			android:layout_height="80dp"
+			android:src="@drawable/ic_nfc_grey_24dp"/>
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="vertical"
+			android:layout_toRightOf="@id/power_src_icon">
+
+			<TextView
+				android:id="@+id/current_display"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="1300 mA"
+				android:textColor="@color/light_grey"
+				android:gravity="center"/>
+
+			<TextView
+				android:id="@+id/temperature_display"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="33.7° C"
+				android:textColor="@color/light_grey"
+				android:gravity="center"/>
+
+			<TextView
+				android:id="@+id/voltage_display"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="4.335 V"
+				android:textColor="@color/light_grey"
+				android:gravity="center"/>
+
+			<TextView
+				android:id="@+id/source_display"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="Wireless"
+				android:textColor="@color/light_grey"
+				android:gravity="center"/>
+
+		</LinearLayout>
+
+	</RelativeLayout>
 </LinearLayout>
+
+

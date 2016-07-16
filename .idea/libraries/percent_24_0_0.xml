@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="percent-24.0.0">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/wear/build/intermediates/exploded-aar/com.android.support/percent/24.0.0/res" />
+      <root url="jar://$PROJECT_DIR$/wear/build/intermediates/exploded-aar/com.android.support/percent/24.0.0/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.android.support/percent/24.0.0/f4143a27e6b7f3f3fd849d8d481a279af7dacd91/percent-24.0.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

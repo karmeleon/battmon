@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">WearBatteryMonitor</string>
-    <string name="hello_round">Hello Round World!</string>
-    <string name="hello_square">Hello Square World!</string>
+    <string name="wireless">Wireless</string>
+    <string name="ac">AC</string>
+    <string name="usb">USB</string>
+    <string name="discharging">Discharging</string>
 </resources>
