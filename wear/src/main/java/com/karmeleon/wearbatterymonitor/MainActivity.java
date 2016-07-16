@@ -16,6 +16,7 @@ import android.support.wearable.view.WatchViewStub;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -39,7 +40,9 @@ import java.util.Set;
 public class MainActivity extends WearableActivity implements MessageApi.MessageListener {
 
 	private static final String TAG = "BatteryInfo";
-	private static final int REFRESH_PERIOD = 5000; // ms
+	private static final int REFRESH_PERIOD = 1000; // ms
+
+	private static final boolean MSG_DEBUG = true;
 
 	private static final String BATTERY_INFO_CAPABILITY_NAME = "battery_info";
 	private static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
@@ -124,6 +127,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 						public void onResult(MessageApi.SendMessageResult sendMessageResult) {
 							if (!sendMessageResult.getStatus().isSuccess()) {
 								Log.e(TAG, "Send unsuccessful to node " + batteryInfoNodeId);
+							} else if(MSG_DEBUG) {
+								Log.d(TAG, "Message successfully sent to node " + batteryInfoNodeId);
 							}
 						}
 					}
@@ -134,6 +139,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	}
 
 	public void onMessageReceived(MessageEvent messageEvent) {
+		if(MSG_DEBUG)
+			Log.d(TAG, "Message received");
 		String data = "";
 		try {
 			data = new String(messageEvent.getData(), "UTF-8");
@@ -149,7 +156,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 			int percentage = batteryInfo.getInt("capacity");
 			mBatteryPercentageText.setText(percentage + "%");
 			mBatteryPercentageMeter.setBackgroundColor(getBatteryColor(percentage));
-			mBatteryPercentageMeter.setLayoutParams(new TableLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT, (float)percentage));
+			mBatteryPercentageMeter.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.MATCH_PARENT, percentage));
 
 			// Update source
 			int drawableId, textId;
