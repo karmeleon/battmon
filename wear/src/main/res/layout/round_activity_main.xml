@@ -25,7 +25,7 @@
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
 				android:background="@color/green"
-				android:layout_weight="60"/>
+				android:layout_weight="0"/>
 
 		</LinearLayout>
 
@@ -34,7 +34,6 @@
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:gravity="center"
-			android:text="60%"
 			android:textSize="40sp"
 			android:textColor="@color/black"/>
 	</RelativeLayout>
@@ -51,8 +50,7 @@
 			android:layout_width="100dp"
 			android:layout_height="75dp"
 			android:paddingBottom="10dp"
-			android:paddingLeft="10dp"
-			android:src="@drawable/ic_nfc_grey_24dp"/>
+			android:paddingLeft="10dp"/>
 
 		<LinearLayout
 			android:layout_width="80dp"
@@ -64,7 +62,6 @@
 				android:id="@+id/current_display"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="1300 mA"
 				android:textColor="@color/light_grey"
 				android:gravity="center"/>
 
@@ -72,7 +69,6 @@
 				android:id="@+id/temperature_display"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="33.7° C"
 				android:textColor="@color/light_grey"
 				android:gravity="center"/>
 
@@ -80,7 +76,6 @@
 				android:id="@+id/voltage_display"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="4.335 V"
 				android:textColor="@color/light_grey"
 				android:gravity="center"/>
 
@@ -88,7 +83,6 @@
 				android:id="@+id/source_display"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:text="Wireless"
 				android:textColor="@color/light_grey"
 				android:gravity="center"/>
 

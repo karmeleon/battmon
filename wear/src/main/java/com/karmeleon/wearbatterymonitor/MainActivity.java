@@ -42,7 +42,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	private static final String TAG = "BatteryInfo";
 	private static final int REFRESH_PERIOD = 1000; // ms
 
-	private static final boolean MSG_DEBUG = true;
+	private static final boolean MSG_DEBUG = false;
 
 	private static final String BATTERY_INFO_CAPABILITY_NAME = "battery_info";
 	private static final String BATTERY_INFO_MESSAGE_PATH = "/battery_info";
@@ -62,6 +62,11 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	private ImageView mSourceDisplayImage;
 
 	private View mBatteryPercentageMeter;
+
+	private boolean mIsAmbient = false;
+	private boolean mHasDrawnScreen = false;
+
+	private JSONObject mLastBatteryInfo;
 
 	/* Messaging setup stuff */
 
@@ -149,8 +154,13 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		JSONObject batteryInfo = null;
 		try {
 			batteryInfo = new JSONObject(data);
+			mLastBatteryInfo = batteryInfo;
 		} catch (JSONException e) { /* this won't happen either */ }
 
+		drawScreen(batteryInfo);
+	}
+
+	private void drawScreen(JSONObject batteryInfo) {
 		try {
 			// Update percentage
 			int percentage = batteryInfo.getInt("capacity");
@@ -177,7 +187,15 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 					drawableId = R.drawable.ic_battery_grey_24dp;
 					textId = R.string.discharging;
 			}
-			mSourceDisplayImage.setImageDrawable(ContextCompat.getDrawable(this, drawableId));
+
+			int color = mIsAmbient ? Color.WHITE : Color.LTGRAY;
+
+			Drawable mWrappedDrawable = ContextCompat.getDrawable(this, drawableId).mutate();
+			mWrappedDrawable = DrawableCompat.wrap(mWrappedDrawable);
+			DrawableCompat.setTint(mWrappedDrawable, color);
+			DrawableCompat.setTintMode(mWrappedDrawable, PorterDuff.Mode.SRC_IN);
+
+			mSourceDisplayImage.setImageDrawable(mWrappedDrawable);
 			mSourceDisplayText.setText(getResources().getString(textId));
 
 			// Update the other fields
@@ -189,6 +207,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 
 			String voltage = String.format("%.3f V", batteryInfo.getInt("voltage") / 1000.0f);
 			mVoltageDisplay.setText(voltage);
+
+			mHasDrawnScreen = true;
 
 		} catch(JSONException e) { /* also won't happen */ }
 	}
@@ -254,13 +274,6 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		tv.getPaint().setColor(Color.LTGRAY);
 	}
 
-	private void tintDrawable(ImageView iv, int color) {
-		Drawable mWrappedDrawable = iv.getDrawable().mutate();
-		mWrappedDrawable = DrawableCompat.wrap(mWrappedDrawable);
-		DrawableCompat.setTint(mWrappedDrawable, color);
-		DrawableCompat.setTintMode(mWrappedDrawable, PorterDuff.Mode.SRC_IN);
-	}
-
 	private int getBatteryColor(int percent) {
 		int color1, color2;
 		float frac = percent / 100.0f;
@@ -285,6 +298,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	public void onEnterAmbient(Bundle ambientDetails) {
 		super.onEnterAmbient(ambientDetails);
 
+		mIsAmbient = true;
+
 		// Android has no way to easily select all views of a type, so we have to do it manually :|
 		mBatteryPercentageText.getPaint().setAntiAlias(false);
 		ambientifyTextView(mCurrentDisplay);
@@ -292,11 +307,12 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		ambientifyTextView(mVoltageDisplay);
 		ambientifyTextView(mSourceDisplayText);
 
-		tintDrawable(mSourceDisplayImage, Color.WHITE);
-
 		// cancel the rapid refresh rate task
 		if(mMonitorTask != null)
 			mMonitorTask.cancel(true);
+
+		if(mLastBatteryInfo != null)
+			drawScreen(mLastBatteryInfo);
 	}
 
 	@Override
@@ -312,6 +328,8 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	public void onExitAmbient() {
 		super.onExitAmbient();
 
+		mIsAmbient = false;
+
 		// Have to do this manually again
 
 		mBatteryPercentageText.getPaint().setAntiAlias(true);
@@ -320,7 +338,9 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		unambientifyTextView(mVoltageDisplay);
 		unambientifyTextView(mSourceDisplayText);
 
-		tintDrawable(mSourceDisplayImage, Color.LTGRAY);
+		if(mLastBatteryInfo != null)
+			drawScreen(mLastBatteryInfo);
+
 		// restart the refresh task
 		mMonitorTask = new BatteryMonitorTask();
 		mMonitorTask.execute();

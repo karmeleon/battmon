@@ -5,14 +5,17 @@ import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.data.FreezableUtils;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
@@ -31,6 +34,8 @@ public class BatteryInfoListenerService extends WearableListenerService {
 
 	private static final String TAG = "BatteryInfoListener";
 	private static final String DATA_ITEM_RECEIVED_PATH = "/battery_info";
+
+	private static final boolean MSG_DEBUG = false;
 
 	private BatteryManager mBatteryManager;
 
@@ -51,6 +56,8 @@ public class BatteryInfoListenerService extends WearableListenerService {
 
 	@Override
 	public void onMessageReceived(MessageEvent messageEvent) {
+		if(MSG_DEBUG)
+			Log.d(TAG, "Received message");
 		String nodeId = messageEvent.getSourceNodeId();
 
 		if(mGoogleApiClient == null) {
@@ -85,6 +92,17 @@ public class BatteryInfoListenerService extends WearableListenerService {
 		}
 
 		// Send the RPC
-		Wearable.MessageApi.sendMessage(mGoogleApiClient, nodeId, DATA_ITEM_RECEIVED_PATH, batteryInfo.toString().getBytes());
+		Wearable.MessageApi.sendMessage(mGoogleApiClient, nodeId, DATA_ITEM_RECEIVED_PATH, batteryInfo.toString().getBytes())
+				.setResultCallback(new ResultCallback<MessageApi.SendMessageResult>() {
+					@Override
+					public void onResult(@NonNull MessageApi.SendMessageResult sendMessageResult) {
+						if (!sendMessageResult.getStatus().isSuccess()) {
+							Log.e(TAG, "Message failed to send");
+						} else if(MSG_DEBUG) {
+							Log.d(TAG, "Message sent successfully");
+						}
+					}
+				});
+
 	}
 }
