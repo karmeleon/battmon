@@ -264,12 +264,9 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	protected void onResume() {
 		super.onResume();
 
-		Log.d(TAG, "onResume");
-
 		if(mGoogleApiClient != null && !mListeningForMessages) {
 			Wearable.MessageApi.addListener(mGoogleApiClient, this);
 			mListeningForMessages = true;
-			Log.d(TAG, "Started listening for messages (onResume)");
 		}
 
 		// restart the existing monitor task, if one exists
@@ -283,19 +280,14 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 	protected void onPause() {
 		super.onPause();
 
-		Log.d(TAG, "onPause");
 		// stop the monitor task from polling when the app isn't open
 		if(mMonitorTask != null) {
 			mMonitorTask.cancel(true);
-			Log.d(TAG, "Stopping monitor task");
-		} else
-			Log.d(TAG, "Not stopping monitor task");
+		}
 		if(mListeningForMessages) {
 			Wearable.MessageApi.removeListener(mGoogleApiClient, this);
 			mListeningForMessages = false;
-			Log.d(TAG, "Stopped listening for messages");
-		} else
-			Log.d(TAG, "Didn't stop listening for messages");
+		}
 	}
 
 	@Override
