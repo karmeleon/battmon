@@ -29,6 +29,16 @@
 
 		</LinearLayout>
 
+		<TextClock
+			android:id="@+id/ambient_clock"
+			android:visibility="invisible"
+			android:textColor="@color/white"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			android:gravity="center"
+			android:layout_marginTop="2dp"/>
+
 		<TextView
 			android:id="@+id/percent_text"
 			android:layout_width="match_parent"

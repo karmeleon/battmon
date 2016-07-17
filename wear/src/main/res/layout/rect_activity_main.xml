@@ -24,10 +24,18 @@
 				android:id="@+id/battery_meter"
 				android:layout_width="0dp"
 				android:layout_height="match_parent"
-				android:background="@color/green"
 				android:layout_weight="0"/>
 
 		</LinearLayout>
+
+		<TextClock
+			android:id="@+id/ambient_clock"
+			android:visibility="invisible"
+			android:textColor="@color/white"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textSize="18sp"
+			android:gravity="center"/>
 
 		<TextView
 			android:id="@+id/percent_text"
