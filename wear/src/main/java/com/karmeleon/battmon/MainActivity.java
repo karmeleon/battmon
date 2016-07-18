@@ -249,6 +249,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 				mSourceDisplayImage = (ImageView) stub.findViewById(R.id.power_src_icon);
 
 				mAmbientClock = (TextClock) stub.findViewById(R.id.ambient_clock);
+				mAmbientClock.getPaint().setAntiAlias(false);
 
 				mBatteryPercentageMeter = stub.findViewById(R.id.battery_meter);
 				mBatteryMeterBackground = (LinearLayout) stub.findViewById(R.id.meter_display);
