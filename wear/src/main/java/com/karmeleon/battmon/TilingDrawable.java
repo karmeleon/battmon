@@ -21,14 +21,12 @@ public class TilingDrawable extends DrawableWrapper {
 
 	@Override
 	public void draw(Canvas canvas) {
-		Log.d(TAG, "draw()");
 		callbackEnabled = false;
 		Rect bounds = getBounds();
 		Drawable wrappedDrawable = getWrappedDrawable();
 
 		int width = wrappedDrawable.getIntrinsicWidth();
 		int height = wrappedDrawable.getIntrinsicHeight();
-		Log.d(TAG, width + " " + height);
 		for (int x = bounds.left; x < bounds.right + width - 1; x+= width) {
 			for (int y = bounds.top; y < bounds.bottom + height - 1; y += height) {
 				wrappedDrawable.setBounds(x, y, x + width, y + height);

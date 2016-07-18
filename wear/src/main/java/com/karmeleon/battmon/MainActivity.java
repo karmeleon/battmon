@@ -339,6 +339,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		ambientifyTextView(mSourceDisplayText);
 
 		mBatteryMeterBackground.setBackgroundColor(Color.BLACK);
+		mBatteryPercentageText.setBackgroundColor(Color.BLACK);
 
 		mAmbientClock.setVisibility(View.VISIBLE);
 
@@ -375,6 +376,7 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 		unambientifyTextView(mSourceDisplayText);
 
 		mBatteryMeterBackground.setBackgroundColor(Color.DKGRAY);
+		mBatteryPercentageText.setBackgroundColor(Color.TRANSPARENT);
 
 		mAmbientClock.setVisibility(View.INVISIBLE);
 

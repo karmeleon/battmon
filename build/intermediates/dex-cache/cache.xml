@@ -26,7 +26,7 @@
         jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
         jumboMode="true"
         revision="24.0.0"
-        sha1="05de8b6e05e343824586b86563d5e341c2eb0b13">
+        sha1="7943d4d3cb449df7d6922c5d1540d8206bffc916">
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_30b12a2f5e52d517e621da600fca87233811753f/classes.dex" />
     </item>
     <item
@@ -96,7 +96,7 @@
         jar="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="24.0.0"
-        sha1="33c1c4fbc593e31d90786995e7fbb7230abb3036">
+        sha1="ec5a79c47dc8e33ec509f194927a755df996a0bf">
         <dex dex="/Users/shawn/GitHub/wear-battery-monitor/wear/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_a74f1c3041a66839d73cf05f398562453ec48aad/classes.dex" />
     </item>
 
