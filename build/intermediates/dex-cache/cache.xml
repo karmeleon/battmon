@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.google.android.support\wearable\2.0.0-alpha2\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="87fb797ba434e0847cfcca4ffd740941c41634e6">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.support-wearable-2.0.0-alpha2_d629e79b5981bb81b0a1adcc29f830ddedf32dc2\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="c4ad638b23eb68dca6f11bc27b3a660b6194c36b">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_b1fa3681595540eaacf31bdee60145f6daf4b8d3\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="f62e763609f65e47dc6c498760a4accf02776788">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.1.1_f609d6af0fc9c5fd599020ca28d97b6a51491f9b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="421b36cf4f0d3bbd75e8f28647fccf36674ef049">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-9.2.1_e1fbc94ab33b30f78bf60025c1b7647ccdc33ff6\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\libs\internal_impl-24.1.1.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="f78c2f395cb096f9dc1dc07e729922b8fcd3c4f5">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.1.1_45528e57e397173124512134d8efe681fa630376\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\24.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="3bd97cfefd783e9de1dd1c30574a6adb44b4409b">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-vector-drawable-24.0.0_38564cf2644a6aaed6301176ead8497dacae60e1\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="863cbb04e6132a509b1961bbee286e9b40bf2820">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run_57af8419b395d94eee98dbb50db228d0c3bbb961\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\support-v4\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="6d7d803871e3203465f71a163e7af104f807b446">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.1.1_920c9cd80739cda6cac948216d68257c73d913d6\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="e7f2d15307c58bfb8a0cbbd213a7c7c9b51550c0">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_666017e0fbc55efb2338ee3acc4102b7df3fc9a1\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="dd1907a2e855eeb2be8aa3486f3d4d4f1c8b22af">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-9.2.1_e1f9e69913a86c7f9e3a756b80a791e906000bb1\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="1256c10604bb098490eab070d76754ac5ceab35c">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.1.1_185df413fdce804d8ecc3c4d79d6c9d004f727ad\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.1.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="c936c1bd42f0c018c18920c7bec619ef056b24f8">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.1.1_2c8ea1785c7de11cc58eebe6364233805325880b\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.google.android.gms\play-services-base\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="421b36cf4f0d3bbd75e8f28647fccf36674ef049">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-base-9.2.1_dba01cba89f490ea5ae43899f7d6cebb76764088\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.google.android.gms\play-services-wearable\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="dd1907a2e855eeb2be8aa3486f3d4d4f1c8b22af">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-wearable-9.2.1_7036d7cfbb3f8b8f0a8db4e0ac0c8627a80cb534\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\libs\internal_impl-24.0.0.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="fcaf463e10e69c1923ccf1edeba3b4196d239e00">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\internal_impl-24.0.0_99d59faeae4c1544f5ef5fb56107b12c22108664\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="819c2c3a4fb135e085445d11131d069cf9c32b2a">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-tasks-9.2.1_8dd1686522a44e7b34758a8661f4b5abacd68582\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.android.support\appcompat-v7\24.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="0874286cc2fd88d54fdf130e9d5372730da6de97">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-appcompat-v7-24.0.0_f9eb39a7ae3546a9c7b7b8dc667162bad5015dbd\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\24.0.0\2943c74db6d4346ab8c6531adac91fa05c137c40\support-annotations-24.0.0.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.0.0_a5c2e04527e335d982ebd6947f623a75eb2de15a\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="4dce3e28a0f9e4c27bb38bec628cdae66f48571d">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\instant-run-bootstrap_25fb2ce7d689bbf4b21d356dcae0916d2b03caee\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="6b896c1067633db41e9c10a3a5d0919c5c4cfc8c">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-9.2.1_dcff9835e9b038ef788f7170de51fa60c18f3606\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\wear\build\intermediates\exploded-aar\com.android.support\recyclerview-v7\23.0.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="4356e230a981d1bbf047d848b91bc0d9b7c5bacc">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-recyclerview-v7-23.0.1_4b49601b8a1e176b00027063f1aa9c7f953ebdbf\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.google.android.gms\play-services-tasks\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="819c2c3a4fb135e085445d11131d069cf9c32b2a">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-tasks-9.2.1_622da7d9203d78c5687f39a27468fe01b83992d1\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\.gradle\caches\modules-2\files-2.1\com.android.support\support-annotations\24.1.1\3af19f153122737b372622fa6c81dd11a1c6b999\support-annotations-24.1.1.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="3af19f153122737b372622fa6c81dd11a1c6b999">
+        <dex dex="C:\Users\Shawn\Github\battmon\wear\build\intermediates\transforms\dex\debug\folders\1000\10\support-annotations-24.1.1_70a8e19436a882573019effa4c98e924705712fd\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.google.android.gms\play-services-basement\9.2.1\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="6b896c1067633db41e9c10a3a5d0919c5c4cfc8c">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.google.android.gms-play-services-basement-9.2.1_3540eb73fec2227327328bd31d5272106e378584\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\24.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="e70f608219ed6b974644c333249ab2bb7b71de98">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-animated-vector-drawable-24.0.0_23c79cc31cfa003d5d7789d11dd2e9c9c9da2adb\classes.dex" />
+    </item>
+    <item
+        jar="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\exploded-aar\com.android.support\support-v4\24.0.0\jars\classes.jar"
+        jumboMode="true"
+        revision="24.0.0"
+        sha1="2f7e6e2dad1bccaf68a8820820adc6c0d5b96d37">
+        <dex dex="C:\Users\Shawn\Github\battmon\mobile\build\intermediates\transforms\dex\debug\folders\1000\10\com.android.support-support-v4-24.0.0_3ee448ec5338bc85eff4969a046e8a901b00e20f\classes.dex" />
+    </item>
+
+</items>

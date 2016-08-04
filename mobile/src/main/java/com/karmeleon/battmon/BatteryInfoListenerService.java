@@ -90,8 +90,7 @@ public class BatteryInfoListenerService extends WearableListenerService {
 			batteryInfo.put("source", batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1));
 			batteryInfo.put("temperature", batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1));
 			if(Build.VERSION.SDK_INT >= 21) {
-				//batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
-				batteryInfo.put("current", Integer.MAX_VALUE);
+				batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
 			} else {
 				// older phones don't support the official battery current API, so use CurrentWidget's code to pull it from /sys/ manually
 				Long current = CurrentReaderFactory.getValue();
