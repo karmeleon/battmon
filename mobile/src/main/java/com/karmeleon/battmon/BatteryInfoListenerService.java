@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.BatteryManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Wearable;
 import com.google.android.gms.wearable.WearableListenerService;
+import com.manor.currentwidget.library.CurrentReaderFactory;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class BatteryInfoListenerService extends WearableListenerService {
 
-	private static final String TAG = "BatteryInfoListener";
+	private static final String TAG = "Battmon";
 	private static final String DATA_ITEM_RECEIVED_PATH = "/battery_info";
 
 	private static final boolean MSG_DEBUG = false;
@@ -81,10 +83,23 @@ public class BatteryInfoListenerService extends WearableListenerService {
 			IntentFilter ifilter = new IntentFilter(Intent.ACTION_BATTERY_CHANGED);
 			Intent batteryStatus = this.registerReceiver(null, ifilter);
 
+			int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+			int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+			batteryInfo.put("capacity", (int)(100 * level / (float)scale));
+
 			batteryInfo.put("source", batteryStatus.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1));
 			batteryInfo.put("temperature", batteryStatus.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1));
-			batteryInfo.put("capacity", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY));
-			batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
+			if(Build.VERSION.SDK_INT >= 21) {
+				//batteryInfo.put("current", mBatteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CURRENT_NOW) / 1000);
+				batteryInfo.put("current", Integer.MAX_VALUE);
+			} else {
+				// older phones don't support the official battery current API, so use CurrentWidget's code to pull it from /sys/ manually
+				Long current = CurrentReaderFactory.getValue();
+				if(current == null)
+					batteryInfo.put("current", Integer.MAX_VALUE);
+				else
+					batteryInfo.put("current", current);
+			}
 			batteryInfo.put("voltage", batteryStatus.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1));
 
 		} catch (JSONException e) {

@@ -4,4 +4,6 @@
     <string name="ac">AC</string>
     <string name="usb">USB</string>
     <string name="discharging">Discharging</string>
+    <string name="current_unsupported">Your phone does not support battery current reading.</string>
+	<string name="na">N/A</string>
 </resources>

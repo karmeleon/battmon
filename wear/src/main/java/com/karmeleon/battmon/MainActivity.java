@@ -1,6 +1,7 @@
 package com.karmeleon.battmon;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -18,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -36,7 +38,8 @@ import java.util.Set;
 
 public class MainActivity extends WearableActivity implements MessageApi.MessageListener {
 
-	private static final String TAG = "BatteryInfo";
+	private static final String TAG = "Battmon";
+	private static final String PREFS_NAME = "Battmon";
 	private static final int REFRESH_PERIOD = 1000; // ms
 
 	private static final boolean MSG_DEBUG = false;
@@ -209,8 +212,25 @@ public class MainActivity extends WearableActivity implements MessageApi.Message
 			mSourceDisplayText.setText(getResources().getString(textId));
 
 			// Update the other fields
-			String current = batteryInfo.getInt("current") + " mA";
-			mCurrentDisplay.setText(current);
+			String currentText = "";
+			int current = batteryInfo.getInt("current");
+			if(current != Integer.MAX_VALUE) {
+				currentText = current + " mA";
+			} else {
+				// the host phone doesn't support current reading, so toast the first time it happens
+				// so the user doesn't get confused.
+				SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+				boolean noCurrentNotification = settings.getBoolean("noCurrentNotification", false);
+				if(!noCurrentNotification) {
+					Toast.makeText(MainActivity.this, getString(R.string.current_unsupported), Toast.LENGTH_SHORT).show();
+					// only show the toast once, ever
+					SharedPreferences.Editor editor = settings.edit();
+					editor.putBoolean("noCurrentNotification", true);
+					editor.commit();
+				}
+			}
+
+			mCurrentDisplay.setText(currentText);
 
 			String temperature = String.format("%.1f° C", batteryInfo.getInt("temperature") / 10.0f);
 			mTemperatureDisplay.setText(temperature);
