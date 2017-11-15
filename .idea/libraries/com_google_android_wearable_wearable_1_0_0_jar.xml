@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="wearable-1.0.0">
+  <library name="com.google.android.wearable:wearable:1.0.0@jar">
     <CLASSES>
       <root url="jar://D:/AndroidSDK/extras/google/m2repository/com/google/android/wearable/wearable/1.0.0/wearable-1.0.0.jar!/" />
     </CLASSES>
